@@ -18,6 +18,10 @@ class PaletteListViewController: UIViewController {
         return self.view.safeAreaLayoutGuide
     }
     
+    var buttons: [UIButton] {
+        return [randomButton, doubleRainbowButton, featuredButton]
+    }
+    
     //ADD SUBVIEWS TO VIEW (4) ---------
     
     //LIFECYCLE
@@ -32,11 +36,12 @@ class PaletteListViewController: UIViewController {
         super.viewDidLoad()
         self.view.backgroundColor = .white
         configureTableView()
+        activateButtons()
         searchForCategory(.featured)
+        selectButton(featuredButton)
     }
 
-    
-    //ADD SUBVIEWS WITH HELPER FUNCTIONS (3) ---------
+    //ADD SUBVIEWS & HELPER FUNCTIONS (3) ---------
     
     func addSubViews() {
         self.view.addSubview(featuredButton)
@@ -129,6 +134,29 @@ class PaletteListViewController: UIViewController {
         paletteTableView.dataSource = self
         paletteTableView.register(PaletteTableViewCell.self, forCellReuseIdentifier: "paletteCell")
         paletteTableView.allowsSelection = false
+    }
+    
+    func activateButtons() {
+        buttons.forEach({$0.addTarget(self, action: #selector(searchButtonTapped(sender:)), for: .touchUpInside)})
+    }
+    
+    @objc func searchButtonTapped(sender: UIButton) {
+        selectButton(sender)
+        switch sender {
+        case featuredButton:
+            searchForCategory(.featured)
+        case randomButton:
+            searchForCategory(.random)
+        case doubleRainbowButton:
+            searchForCategory(.doubleRainbow)
+        default:
+            print("Error, button not found")
+        }
+    }
+    
+    func selectButton(_ button: UIButton) {
+        buttons.forEach({$0.setTitleColor(UIColor.lightGray, for: .normal)})
+        button.setTitleColor(UIColor.black, for: .normal)
     }
 }
 
