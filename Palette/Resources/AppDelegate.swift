@@ -13,8 +13,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        //SET INITIAL VIEW CONTROLLER
+        guard let window = window else { return false }
+        window.rootViewController = PaletteListViewController()
         
         return true
     }
